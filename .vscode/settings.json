@@ -1,0 +1,103 @@
+{
+    "editor.tokenColorCustomizations":{
+        "textMateRules": [
+            {
+                "scope": "variable.other.global",
+                "settings": {
+                    "foreground": "#FFA500" // Change the color to your desired color (e.g., green)
+                }
+            },
+            {
+                "scope": "variable.other.local",
+                "settings": {
+                    "foreground": "#d4e2e8" // Change the color to your desired color (e.g., blue)
+                }
+            },
+            {
+                "scope": "variable.parameter",
+                "settings": {
+                    "foreground": "#ebc30f" //e7aaff
+                }
+            },
+            {
+                "scope": "variable.other.property",
+                "settings": {
+                    "foreground": "#9CDCFE" 
+                }
+            }
+        ]
+    },
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "windows.h": "c",
+        "defines.h": "c",
+        "logger.h": "c",
+        "utility": "cpp",
+        "xutility": "cpp",
+        "compare": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "xmemory": "cpp",
+        "xstring": "cpp",
+        "xtr1common": "cpp",
+        "strings.h": "c",
+        "events.h": "c",
+        "inputs.h": "c",
+        "dynamic_array.h": "c",
+        "renderer.h": "c",
+        "platform.h": "c",
+        "glad.h": "c",
+        "files.h": "c",
+        "shader.h": "c",
+        "math.h": "c",
+        "render_types.h": "c",
+        "engine_types.h": "c",
+        "transform.h": "c",
+        "component_types.h": "c",
+        "utils.h": "c",
+        "mat3x3.h": "c",
+        "mat4x4.h": "c",
+        "vec3.h": "c",
+        "bit": "c",
+        "cmath": "c",
+        "concepts": "c",
+        "cstddef": "c",
+        "cstdint": "c",
+        "cstdio": "c",
+        "cstdlib": "c",
+        "cstring": "c",
+        "cwchar": "c",
+        "initializer_list": "c",
+        "limits": "c",
+        "xstddef": "c",
+        "camera.h": "c",
+        "vertex_buffer.h": "c",
+        "assets_manager.h": "c",
+        "obj_loader.h": "c",
+        "assets_types.h": "c",
+        "math_defines.h": "c",
+        "caster.h": "c",
+        "pipeline.h": "c",
+        "component.h": "c",
+        "entity_manager.h": "c",
+        "ecs_defines.h": "c",
+        "functional": "c",
+        "unoredered_map.h": "c",
+        "hash.h": "c",
+        "componenet_manager.h": "c",
+        "system_manager.h": "c",
+        "ecs_manager.h": "c",
+        "collection_types.h": "c",
+        "mesh_renderer.h": "c",
+        "mainmeshrenderersystem.h": "c",
+        "entry.h": "c",
+        "fakegravitysystem.h": "c",
+        "light_source_render_system.h": "c",
+        "trigonometry.h": "c",
+        "quaternion.h": "c",
+        "corecrt_math.h": "c",
+        "vec4.h": "c",
+        "vec2.h": "c"
+    },
+    "cmake.configureOnOpen": true
+}
