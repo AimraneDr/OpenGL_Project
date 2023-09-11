@@ -3,7 +3,7 @@
 
 #include "defines.h"
 
-#define ENGINE_RESOURCES_PATH "D:/OpenGL_Project/engine/resources/"
+#define ENGINE_RESOURCES_PATH "/home/aimrane-dr/Dev/C/OpenGL_Project/engine/resources/"
 
 
 typedef struct FileHandler{

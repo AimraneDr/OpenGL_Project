@@ -3,7 +3,7 @@
 
 #include "defines.h"
 
-#include <Windows.h>
+#include "platform/platform_types.h"
 #include "math/math_defines.h"
 
 #include "component_types.h"
@@ -37,12 +37,7 @@ typedef struct windowConfig{
 }windowConfig;
 
 typedef struct PlatformState{
-    HINSTANCE h_instance;
-    HWND hwnd;
-    HDC dc;
-    HGLRC rc;
-
-    windowConfig wconfig;
+    WindowState w_state;
 }PlatformState;
 
 typedef struct Camera{

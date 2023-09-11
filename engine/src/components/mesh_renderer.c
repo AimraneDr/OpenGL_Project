@@ -1,5 +1,7 @@
 #include "components/mesh_renderer.h"
 
+//TODO : move to rendering layer
+//should be removed and be passed to the reder middleware to handle it
 #include <glad/glad.h>
 
 #include "render/index_buffer.h"
@@ -69,6 +71,7 @@ bool mesh_renderer_draw_mesh(Shader* shader, MeshRenderer* m, Transform transfor
     model = mat4_rotate(&model, transform.rotation);
     model = mat4_translate(model, transform.position);
 
+    
     u32 modelUni = glGetUniformLocation(shader->id, "model");
     glUniformMatrix4fv(modelUni, 1, GL_FALSE, &(model.elements[0]));
 

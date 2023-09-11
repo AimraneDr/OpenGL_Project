@@ -11,6 +11,7 @@
 #include "render/uniform_buffer.h"
 
 #include <glad/glad.h>
+#include <stdlib.h>
 #include "core/logger.h"
 
 bool ubo_create(u32 bindingPointIndex, u32 size, UBO* out_UBO){

@@ -6,7 +6,7 @@
 
 bool texture_create(const char* img_path, Shader* program, Texture* out_tex);
 bool texture_bind(Texture* tex);
-bool texture_unbind(Texture* tex);
+bool texture_unbind();
 bool texture_delete(Texture* tex);
 
 #endif /* TEXTURE_H */

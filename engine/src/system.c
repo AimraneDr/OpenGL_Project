@@ -16,7 +16,10 @@
 #include "components/mesh_renderer.h"
 #include "assets_manager/assets_manager.h"
 
-#include <glad/glad.h>
+//TODO : move to rendering layer
+#include <GL/gl.h>
+#include <GL/glx.h>
+
 #include <stdlib.h>
 
 #include "core/CDS/unoredered_map.h"
@@ -41,19 +44,22 @@ bool systems_init(SystemState* sysState, GameSetupInfo* game_info){
     events_sys_init();
     inputs_sys_init();
 
+    windowConfig wconfig = {
+        .name = game_info->window_info.name,
+        .width = game_info->window_info.width,
+        .height = game_info->window_info.height,
+        .x = game_info->window_info.x,
+        .y = game_info->window_info.y,
+        .resizable = false
+    };
     sysState->shouldClose = false;
-    sysState->platform.wconfig.name = game_info->window_info.name;
-    sysState->platform.wconfig.width = game_info->window_info.width;
-    sysState->platform.wconfig.height = game_info->window_info.height;
-    sysState->platform.wconfig.x = game_info->window_info.x; 
-    sysState->platform.wconfig.y = game_info->window_info.y;
     sysState->client_setup = game_info->setup;
     sysState->client_start = game_info->start;
     sysState->client_update = game_info->update;
     sysState->client_quit = game_info->quit;
     
     
-    platform_start(&sysState->platform.wconfig, &sysState->platform);
+    platform_start(wconfig, &sysState->platform);
     
 
     ecs_manager_init(0);
@@ -119,7 +125,7 @@ bool systems_run(SystemState* sysState){
     clock_start(&clock);
 
     Camera main_camera;
-    camera_obj_init(&main_camera,vec3(0.f,.5f,5.f), vec2((f32)sysState->platform.wconfig.width,(f32)sysState->platform.wconfig.height));
+    camera_obj_init(&main_camera,vec3(0.f,.5f,5.f), vec2((f32)sysState->platform.w_state.width,(f32)sysState->platform.w_state.height));
     sysState->frame.camera = &main_camera;
     //event_add_listner(EVENT_CODE_RESIZE, sysState->frame.camera, on_window_resize_set_camera_rect);
 
@@ -130,10 +136,9 @@ bool systems_run(SystemState* sysState){
 
     while (!sysState->shouldClose)
     {
-        platform_window_proccess_msg();
+        platform_window_proccess_events(&sysState->platform.w_state);
         
         if(sysState->shouldClose) break;
-    
         clock_update(&clock);
         sysState->frame.deltaTime = clock.elapsed - clock.preElapsed;
 
@@ -151,7 +156,8 @@ bool systems_run(SystemState* sysState){
 
         if(sysState->client_update != 0) sysState->client_update(&sysState->frame);
 
-        SwapBuffers(sysState->platform.dc);
+        //TODO : move to rendering layer
+        glXSwapBuffers(sysState->platform.w_state.display, sysState->platform.w_state.window);
         input_update(sysState->frame.deltaTime);
     }
     
@@ -163,6 +169,8 @@ bool systems_run(SystemState* sysState){
     clock_stop(&clock);
     return true;
 }
+
+
 bool systems_sutdown(SystemState* sysState){
     INFO("Shutting down...")
     ecs_manager_shutdown(0);

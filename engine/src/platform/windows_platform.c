@@ -1,5 +1,5 @@
-#include "platform/platform.h"
 #ifdef _WIN32
+#include "platform/platform.h"
 
 #include "core/inputs.h"
 #include "core/events.h"
@@ -239,7 +239,7 @@ bool LoadOpenGL(PlatformState* state){
     return true;
 }
 
-bool platform_window_proccess_msg(){
+bool platform_window_proccess_events(WindowState* state){
     MSG msg;
     while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
     {

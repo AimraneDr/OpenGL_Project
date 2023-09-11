@@ -4,12 +4,12 @@
 #include "core/CDS/collection_types.h"
 
 #define MAX_COMPONENT_TYPES (sizeof(Mask64) * 8)
-#define ENTITY_BIT_SIZE 64
+#define ENTITY_BIT_COUNT 64
 #define MAX_ENTITIES 10000
 #define INVALID_ENTITY_ID -1
 #define INVALID_COMPONENT_TYPE 64
 #define EMPTY_COMPONENT_MASK 0
-#define ENTITY_U64_SIZE (MAX_ENTITIES / ENTITY_BIT_SIZE)
+#define ENTITY_U64_MAPS_COUNT ((MAX_ENTITIES % ENTITY_BIT_COUNT == 0) ? (MAX_ENTITIES / ENTITY_BIT_COUNT) : ((MAX_ENTITIES / ENTITY_BIT_COUNT) + 1))
 
 typedef unsigned long long  ID;
 typedef unsigned long long  Mask64;
@@ -26,7 +26,8 @@ typedef struct ComponentArray
     u32 componentSize;
     /// @brief acccess component by Entityid
     void* components[MAX_ENTITIES];
-
+    
+    u32 aliveComponentsCount;
 } ComponentArray;
 
 typedef struct EntityManager{
@@ -73,7 +74,7 @@ typedef struct System{
 
     /// @brief array of bool tells if an entity is targett
     //change to tree
-    u64 targets[ENTITY_U64_SIZE + 1];
+    u64* targets;
 
     /// @brief reference to the registered system struct
     void* self;

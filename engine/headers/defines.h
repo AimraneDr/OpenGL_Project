@@ -32,7 +32,11 @@ typedef enum RESULT_MSG{
 #define null (void*)0
 
 #ifdef API
-    #define DLL_EXPORT __declspec(dllexport)
+    #ifdef _WIN32
+        #define DLL_EXPORT __declspec(dllexport)
+    #elif defined(__linux__)
+        #define DLL_EXPORT __attribute__((visibility("default")))
+    #endif
 #else
     #define DLL_EXPORT
 #endif

@@ -1,15 +1,19 @@
 {
+    "version": "0.2.0",
     "configurations": [
         {
-            "name": "(windows) Launch",
-            "type": "cppvsdbg",
+            "name": "Run Game",
+            "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/bin/game.exe",
+            "program": "${workspaceFolder}/bin/linux/game",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceRoot}/bin/",
+            "cwd": "${workspaceFolder}",
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
             "environment": [],
-            "console": "newExternalWindow"
+            "externalConsole": false,
+            
         }
     ]
 }

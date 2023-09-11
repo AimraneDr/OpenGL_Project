@@ -2,15 +2,15 @@
 #define PLATFORM_H
 
 #include "defines.h"
-#include "Windows.h"
+#include "platform_types.h"
 #include "engine_types.h"
 
 
 
-DLL_EXPORT bool platform_start(windowConfig* wconfig, PlatformState* outstate);
+DLL_EXPORT bool platform_start(windowConfig wconfig, PlatformState* outstate);
 DLL_EXPORT bool platform_shutdown(PlatformState* state);
 
-bool platform_window_proccess_msg();
+bool platform_window_proccess_events(WindowState* state);
 
 void platform_console_write(const char* msg, u8 color);
 void platform_console_write_error(const char* msg, u8 color);

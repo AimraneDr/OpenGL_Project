@@ -1,6 +1,8 @@
 #include "systems/render/mainMeshRendererSystem.h"
 
 #include <glad/glad.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "engine_types.h"
 #include "ecs/ecs_manager.h"
@@ -31,8 +33,8 @@ typedef struct DirectionalLightSourceUniformInterface{
     Vec3 direction;
 }DirectionalLightSourceUniformInterface;
 
-const u32 MAX_POINT_LIGHTS = 20;
-const u32 MAX_DIRECTIONAL_LIGHTS = 10;
+#define MAX_POINT_LIGHTS 20
+#define MAX_DIRECTIONAL_LIGHTS 10
 
 bool main_mesh_renderer_system_start(void* self){
     MainMeshRendererSystem* sys = (MainMeshRendererSystem*) self;
@@ -129,7 +131,6 @@ bool main_mesh_renderer_system_pre_update(void* self, void* frame_info){
 bool main_mesh_renderer_system_update(void* self, EntityID entity, void* frame_info){
     MainMeshRendererSystem* sys = (MainMeshRendererSystem*) self;
     FrameInfo* frame = (FrameInfo*) frame_info;
-
     MeshRenderer* meshRnd = (MeshRenderer*)ecs_manager_get_component(0,entity,TYPE_NAME(MeshRenderer));
     Transform* transform = (Transform*)ecs_manager_get_component(0,entity,TYPE_NAME(Transform));
 

@@ -26,7 +26,7 @@ bool game_init(GameSetupInfo* info){
 }
 
 bool game_start(){
-    
+    DEBUG("game start");
     //TODO : move to a scene manager constract_scene function
     ///
     Mesh plane_m;

@@ -5,6 +5,9 @@
 #include "core/CDS/details/hash.h"
 #include "core/CDS/strings.h"
 
+#include <stdlib.h>
+#include <string.h>
+
 u32 component_mask_to_array_index(Mask64 mask){
     if(mask == 0) return -1;
     u32 index = 0;
@@ -46,6 +49,9 @@ bool component_manager_register_component(ComponentManager* manager,const char* 
     // TODO : test (passing the address of ComponentArray insteade of the value as the value of the key in the unordered map)
     
     ComponentArray* cArr = component_array_create(type, component_size);
+    cArr->name = malloc(stringLength(component_name) + 1);
+    stringCopy(cArr->name, component_name);
+
     manager->ComponentsArrays[type] = cArr;
     manager->componentsCount++;
     return true;
@@ -69,6 +75,10 @@ void* component_manager_get_component(ComponentManager* manager, ComponentType c
     ComponentArray* arr = manager->ComponentsArrays[component_type];
     if(arr == 0 || arr->type == 0){
         ERR("Attempt of retrieving an unregistered Component from an entity")
+        return null;
+    }
+    if(arr->aliveComponentsCount == 0){
+        ERR("Attempt of retrieving a components from an empty componentArray")
         return null;
     }
     return component_array_get_data(arr,id);

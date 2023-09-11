@@ -97,7 +97,8 @@
         "quaternion.h": "c",
         "corecrt_math.h": "c",
         "vec4.h": "c",
-        "vec2.h": "c"
+        "vec2.h": "c",
+        "platform_types.h": "c"
     },
     "cmake.configureOnOpen": true
 }

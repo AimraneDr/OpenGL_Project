@@ -15,7 +15,7 @@
 #include "render/vertex_array.h"
 #include "core/logger.h"
 #include <stdlib.h>
-#include <glad/glad.h>
+
 
 LightSource light_source_create_mesh_light(Mesh* mesh, f32 radius, Vec4 color){
     LightSource out = {

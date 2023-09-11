@@ -1,7 +1,12 @@
 #include "ecs/system_manager.h"
 
+#include "ecs/system.h"
 #include "core/CDS/unoredered_map.h"
 #include "core/logger.h"
+
+#include <stdlib.h>
+
+
 
 bool system_manager_init(SystemManager* out_manager){
     unordered_map_create(&out_manager->mSystems,_S_MAP_SIZE, MAP_KEY_TYPE_STRING);
@@ -29,14 +34,7 @@ bool system_manager_register_system(SystemManager* manager, SystemRegisterInfo r
     //resize if the map is filled
     if(manager->mSystems.length == manager->mSystems.maxSize) unordered_map_resize(&manager->mSystems, manager->mSystems.maxSize + (manager->mSystems.maxSize/4));
     //move to separate func so i can free it afterward
-    System* sysPtr = (System*)malloc(sizeof(System));
-    sysPtr->systemName = register_info.systemName;
-    sysPtr->self = register_info.self;
-    sysPtr->start = register_info.start;
-    sysPtr->preUpdate = register_info.preUpdate;
-    sysPtr->update = register_info.update;
-    sysPtr->AfterUpdate = register_info.AfterUpdate;
-    sysPtr->shutdown = register_info.shutdown;
+    System* sysPtr = system_create_new_system(register_info);
     unordered_map_set(&manager->mSystems, (void*)register_info.systemName, (void*)sysPtr);
 
     manager->systemsCount++;
@@ -57,21 +55,24 @@ bool system_manager_entity_destroyed(SystemManager* manager, EntityID id){
     MapNode* node = manager->mSystems.start;
     while(node){
         System* s = node->value;
-        s->targets[id / ENTITY_BIT_SIZE] &= ~(1ULL << (id % ENTITY_BIT_SIZE));
+        system_remove_entity_from_targets_list(s, id);
         node = node->next;
     }
     return true;
 }
-#include "core/CDS/details/hash.h"
 bool system_manager_entity_signature_changed(SystemManager* manager, EntityID id, Mask64 entitySignature){
     MapNode* node = manager->mSystems.start;
     while(node){
-        System* s = node->value;
-        Mask64 systemSignature = s->targetsSignature;
+        System* sys = node->value;
+        Mask64 systemSignature = sys->targetsSignature;
         if((systemSignature & entitySignature) == systemSignature){
-            s->targets[id / ENTITY_BIT_SIZE] |= (1ULL << (id % ENTITY_BIT_SIZE));
+            //add target
+            // DEBUG("sys : %s", sys->systemName);
+            system_add_entity_to_targets_list(sys, id);
         }else{
-            s->targets[id / ENTITY_BIT_SIZE] &= ~(1ULL << (id % ENTITY_BIT_SIZE));
+            //remove target
+            // DEBUG("sys : %s", sys->systemName);
+            system_remove_entity_from_targets_list(sys, id);
         }
         node = node->next;
     }
@@ -102,17 +103,20 @@ bool system_manager_update_systems(SystemManager* manager, FrameInfo* frame){
 
         // DEBUG("num of entities targeted by system is : %d", s->targets.length)
         u32 length=0, updated=0;
-        for (u32 i = 0; i < ENTITY_U64_SIZE+1; ++i) {
+        for (u32 i = 0; i < ENTITY_U64_MAPS_COUNT; i++) {
             u64 bitset = s->targets[i];
-            u64 entityIndex = i * ENTITY_BIT_SIZE;
+            u64 entityID = i * ENTITY_BIT_COUNT;
 
             while (bitset != 0) {
                 if (bitset & 1) {
-                    if(s->update != null || s->update != 0) s->update(s->self, entityIndex, frame);
+                    
+                    if(s->update != null || s->update != 0) {
+                        s->update(s->self, entityID, frame);
+                    }
                     updated++;
                 }
                 bitset >>= 1;
-                entityIndex++;
+                entityID++;
             }
             length++;
         }
@@ -133,7 +137,7 @@ bool system_manager_shutdown_systems(SystemManager* manager){
     while(sysNode){
         System* s = sysNode->value;
         if(s->shutdown != null || s->shutdown != 0) s->shutdown(s->self);
-        free(s->self);
+        system_clean_up(s);
         sysNode = sysNode->next;
     }
     return true;

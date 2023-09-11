@@ -13,6 +13,7 @@ bool system_manager_set_system_signature(SystemManager* manager,const char* sys_
 bool system_manager_entity_destroyed(SystemManager* manager, EntityID id);
 bool system_manager_entity_signature_changed(SystemManager* manager, EntityID id, Mask64 entitySignature);
 
+
 bool system_manager_start_systems(SystemManager* manager);
 bool system_manager_update_systems(SystemManager* manager, FrameInfo* frame);
 bool system_manager_shutdown_systems(SystemManager* manager);

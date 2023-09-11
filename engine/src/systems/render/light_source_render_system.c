@@ -26,7 +26,7 @@
 #include "render/vertex_array.h"
 
 #include <glad/glad.h>
-
+#include <stdlib.h>
 
 bool light_source_render_system_start(void* self){
     LightSourceRenderSystem* sys = (LightSourceRenderSystem*) self;
